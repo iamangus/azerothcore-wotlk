@@ -385,6 +385,14 @@ public: // pussywizard: public class Member
         auto itr = m_members.find(guid.GetCounter());
         return (itr != m_members.end()) ? &itr->second : nullptr;
     }
+    // Agent snapshots need a member's rank name for display; RankInfo is
+    // private, so expose a read-only query next to the GetMember helpers.
+    std::string GetMemberRankName(ObjectGuid memberGuid) const
+    {
+        Member const* member = GetMember(memberGuid);
+        RankInfo const* rank = member ? GetRankInfo(member->GetRankId()) : nullptr;
+        return rank ? rank->GetName() : std::string();
+    }
     inline Member* GetMember(ObjectGuid guid)
     {
         auto itr = m_members.find(guid.GetCounter());
